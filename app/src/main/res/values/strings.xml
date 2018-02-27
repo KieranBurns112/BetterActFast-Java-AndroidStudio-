@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MobAppCourseworkProject</string>
+    <string name="play_button">Press to play</string>
+    <string name="highscore">Highscore:</string>
+    <string name="title">main screen game title</string>
+    <string name="how_to_play_button">button to open how to play screen</string>
+    <string name="BackButton">Back button on help page</string>
+</resources>
