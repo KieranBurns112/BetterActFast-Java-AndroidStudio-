@@ -9,34 +9,29 @@ public class Bombs {
     Bitmap currentBomb[] = new Bitmap[5];
     int bombX, bombY, bombFrame, currentBombNo;
 
-    public Bombs(Context context, boolean first) {
-        if (first == true){
-            BlackBombA(context);
-        }
-        else{
-            Random rand = new Random();
-            int chooseBomb = rand.nextInt(5);
+    public Bombs(Context context) {
+        Random rand = new Random();
+        int chooseBomb = /*rand.nextInt(5);*/ 0;
 
-            if (chooseBomb == 0) {
-                BlackBombA(context);
-                currentBombNo = 0;
-            }
-            else if (chooseBomb == 1) {
-                BlackBombB(context);
-                currentBombNo = 1;
-            }
-            else if (chooseBomb == 2) {
-                RedBomb(context);
-                currentBombNo = 2;
-            }
-            else if (chooseBomb == 3) {
-                YellowBomb(context);
-                currentBombNo = 3;
-            }
-            else if (chooseBomb == 4) {
-                BlueBomb(context);
-                currentBombNo = 4;;
-            }
+        if (chooseBomb == 0) {
+            BlackBombA(context);
+            currentBombNo = 0;
+        }
+        else if (chooseBomb == 1) {
+            BlackBombB(context);
+            currentBombNo = 1;
+        }
+        else if (chooseBomb == 2) {
+            RedBomb(context);
+            currentBombNo = 2;
+        }
+        else if (chooseBomb == 3) {
+            YellowBomb(context);
+            currentBombNo = 3;
+        }
+        else if (chooseBomb == 4) {
+            BlueBomb(context);
+            currentBombNo = 4;
         }
 
         bombX = (GameWindow.displayX /2) - (currentBomb[0].getWidth() /2) + 50;

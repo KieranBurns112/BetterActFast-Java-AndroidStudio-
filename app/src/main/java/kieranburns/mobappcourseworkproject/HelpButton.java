@@ -15,7 +15,6 @@ public class HelpButton extends AppCompatActivity {
     }
 
     public void Back(View v) {
-        Intent returnHome = new Intent(this, MainActivity.class);
-        startActivity(returnHome);
+        finish();
     }
 }
