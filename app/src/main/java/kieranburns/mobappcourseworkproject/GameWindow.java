@@ -14,26 +14,17 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.os.Handler;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-
 public class GameWindow extends View {
 
     Bitmap background, success_screen, fail_screen,spark;
     Rect rect;
     static int displayX, displayY;
-    int score = 0,taps = 0, sparkPosX, sparkPosY, highScore = 0;
+    int score,taps, sparkPosX, sparkPosY;
     Bombs bomb;
     boolean success = false, pressDown = false;
     Handler handler;
     Runnable runnable;
-    final long update_screen = 1000;
+    final long update_screen = 100;
     float touchPosX, touchPosY;
 
 
@@ -41,24 +32,8 @@ public class GameWindow extends View {
     public GameWindow(Context context) {
         super(context);
 
-        InputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream("highscore.txt");
-            highScore = Integer.parseInt(inputStream.toString());
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        score = 0;
+        taps = 0;
 
         background = BitmapFactory.decodeResource(getResources(),R.drawable.background);
         success_screen = BitmapFactory.decodeResource(getResources(),R.drawable.success);
@@ -87,55 +62,68 @@ public class GameWindow extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawBitmap(background,null,rect,null);
+        canvas.drawBitmap(background, null, rect, null);
 
-        Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(72);
-        canvas.drawText("Score: " + score, 40, 70, paint);
-        canvas.drawText("HighScore: " + highScore, 40, 140, paint);
+        Paint letters = new Paint();
+        letters.setColor(Color.BLACK);
+        letters.setTextSize(72);
+        canvas.drawText("Score: " + score, 40, 70, letters);
 
-        canvas.drawBitmap(bomb.getBitmap(),bomb.bombX, bomb.bombY,null);
+        canvas.drawBitmap(bomb.getBitmap(), bomb.bombX, bomb.bombY, null);
         bomb.bombFrame++;
 
         if (bomb.currentBombNo == 0) {
-            sparkPosX = (bomb.bombX*4)+75;
+            sparkPosX = (bomb.bombX * 4) + 75;
             sparkPosY = bomb.bombY;
-            canvas.drawBitmap(spark, sparkPosX, sparkPosY,null);
+            canvas.drawBitmap(spark, sparkPosX, sparkPosY, null);
 
             if (pressDown) {
+                if (touchPosX >= sparkPosX && touchPosX <= (sparkPosX + spark.getWidth())) {
+                    if (touchPosY >= sparkPosY && touchPosY <= (sparkPosY + spark.getHeight())) {
+                        success = true;
+                    }
+                }
                 pressDown = false;
-                if (touchPosX >= sparkPosX && touchPosX <= (sparkPosX + spark.getWidth())){
-                    if (touchPosY >= sparkPosY && touchPosY <= (sparkPosY + spark.getHeight())){
-                        success = true;
-                    }
-                }
             }
         }
+
         else if (bomb.currentBombNo == 1) {
-            sparkPosX = bomb.bombX+50;
-            sparkPosY = bomb.bombY-20;
-            canvas.drawBitmap(spark, sparkPosX, sparkPosY,null);
+            sparkPosX = bomb.bombX + 50;
+            sparkPosY = bomb.bombY - 20;
+            canvas.drawBitmap(spark, sparkPosX, sparkPosY, null);
 
             if (pressDown) {
-                if (touchPosX >= sparkPosX && touchPosX <= (sparkPosX + spark.getWidth())){
-                    if (touchPosY >= sparkPosY && touchPosY <= (sparkPosY + spark.getHeight())){
+                if (touchPosX >= sparkPosX && touchPosX <= (sparkPosX + spark.getWidth())) {
+                    if (touchPosY >= sparkPosY && touchPosY <= (sparkPosY + spark.getHeight())) {
                         success = true;
                     }
                 }
+                pressDown = false;
             }
         }
+
         else if (bomb.currentBombNo == 2) {
-            if (/*REAL SUCCESS CONDITION HERE*/ bomb.bombFrame > 4) {
+            if (pressDown) {
+                if (touchPosX >= bomb.bombX && touchPosX <= (bomb.bombX + bomb.getBitmap().getWidth())) {
+                    if (touchPosY >= bomb.bombY && touchPosY <= (bomb.bombY + bomb.getBitmap().getHeight())) {
+                        taps++;
+                    }
+                }
+                pressDown = false;
+            }
+            if (taps >= 5) {
                 success = true;
-                //Taps for counting red pressed (make sure to reset)
+                taps = 0;
             }
         }
+
+
         else if (bomb.currentBombNo == 3) {
             if (/*REAL SUCCESS CONDITION HERE*/ bomb.bombFrame > 4) {
                 success = true;
             }
         }
+
         else if (bomb.currentBombNo == 4) {
             if (/*REAL SUCCESS CONDITION HERE*/ bomb.bombFrame > 4) {
                 success = true;
@@ -156,42 +144,12 @@ public class GameWindow extends View {
             success = false;
         }
 
-        if(bomb.bombFrame > 4) {
-            if (!success) {
-                canvas.drawBitmap(fail_screen,null,rect,null);
-                newHighScore(); //add if condition
-                ((Play) getContext()).finish();
-            }
-            else {
-                bomb.bombFrame = 0;
-            }
+        if(bomb.bombFrame > 31) {
+            /*game over and high score screen*/
+            ((Play) getContext()).finish();
         }
 
         handler.postDelayed(runnable,update_screen);
-    }
-
-    private void newHighScore() {
-        OutputStream outputStream = null;
-        try {
-            outputStream = new FileOutputStream("highscore.txt");
-            outputStream.write(score);
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        finally {
-            if (outputStream != null){
-                try {
-                    outputStream.close();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 
     @Override
