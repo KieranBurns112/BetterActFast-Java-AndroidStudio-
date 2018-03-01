@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
         */
 
         highScore = CurrentHighScore.getInt("HighScore", 0);
-        HighScoreText = (TextView) findViewById(R.id.HighScore);
+        HighScoreText = findViewById(R.id.HighScore);
         HighScoreText.setText("High Score: " + highScore);
     }
 
