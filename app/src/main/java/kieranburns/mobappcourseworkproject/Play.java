@@ -32,5 +32,7 @@ public class Play extends Activity {
         SharedPreferences.Editor ScoreEditor = pref.edit();
         ScoreEditor.putInt("HighScore", MainActivity.highScore);
         ScoreEditor.commit();
+
+        MainActivity.HighScoreText.setText("High Score: " + MainActivity.highScore);
     }
 }

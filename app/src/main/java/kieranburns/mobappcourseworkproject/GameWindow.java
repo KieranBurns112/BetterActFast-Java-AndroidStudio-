@@ -14,20 +14,18 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.os.Handler;
 
-public class GameWindow extends View {
+public class GameWindow extends View{
     //Class variables
-    Bitmap background, success_screen, fail_screen,spark;
-    Rect rect;
+    Bitmap background, success_screen, fail_screen,spark,target;
+    Rect screenSize;
     static int displayX, displayY;
     int score, highScore, taps, sparkPosX, sparkPosY, successScreenTicks, gameOverTicks;
     Bombs bomb;
-    boolean success,pressDown;
+    boolean success, pressDown, swiped;
     Handler handler;
     Runnable runnable;
     final long update_screen = 100;
-    float touchPosX, touchPosY;
-
-
+    float touchPosX, touchPosY, swipePosX, swipePosY;
 
     public GameWindow(Context context) {
         super(context);
@@ -38,6 +36,7 @@ public class GameWindow extends View {
         successScreenTicks = 0;
         success = false;
         pressDown = false;
+        swiped = false;
         gameOverTicks = 0;
 
         //Request an existing high score, if one
@@ -49,6 +48,7 @@ public class GameWindow extends View {
         success_screen = BitmapFactory.decodeResource(getResources(),R.drawable.success);
         fail_screen = BitmapFactory.decodeResource(getResources(),R.drawable.failure);
         spark = BitmapFactory.decodeResource(getResources(),R.drawable.snub);
+        target = BitmapFactory.decodeResource(getResources(),R.drawable.target);
 
         //Get screen size to scale the game to the phone screen.
         Display display = ((Activity)getContext()).getWindowManager().getDefaultDisplay();
@@ -56,7 +56,7 @@ public class GameWindow extends View {
         display.getSize(size);
         displayX = size.x;
         displayY = size.y;
-        rect = new Rect(0,0,displayX,displayY);
+        screenSize = new Rect(0,0,displayX,displayY);
 
         //Generate the first bomb for the game
         bomb = new Bombs(context);
@@ -77,7 +77,7 @@ public class GameWindow extends View {
         super.onDraw(canvas);
 
         //Draw background on screen.
-        canvas.drawBitmap(background, null, rect, null);
+        canvas.drawBitmap(background, null, screenSize, null);
 
         //Draw current user score on screen.
         Paint letters = new Paint();
@@ -134,9 +134,8 @@ public class GameWindow extends View {
                 }
             }
 
-            //If the current bomb is 'RedBomb'
-            //bomb and await 5 clicks on the bomb
-            //as the success condition.
+            //If the current bomb is 'RedBomb' await 5
+            // clicks on the bomb as the success condition.
             else if (bomb.currentBombNo == 2) {
                 if (pressDown) {
                     if (touchPosX >= bomb.bombX && touchPosX <= (bomb.bombX + bomb.getBitmap().getWidth())) {
@@ -152,13 +151,28 @@ public class GameWindow extends View {
                 }
             }
 
-
+            //If the current bomb is 'BlueBomb' await a flick
+            //from the middle of the screen towards the top as
+            //the success condition.
             else if (bomb.currentBombNo == 3) {
-                if (/*REAL SUCCESS CONDITION HERE*/ bomb.bombFrame > 4) {
-                    success = true;
+                int targetX = ((displayX / 2) - (target.getWidth() / 2));
+                int targetY = (bomb.bombY - (target.getHeight() / 2));
+                canvas.drawBitmap(target, targetX, targetY, null);
+
+                if (pressDown && swiped) {
+                    if (touchPosX >= bomb.bombX && touchPosX <= (bomb.bombX + bomb.getBitmap().getWidth()) && swipePosX >= targetX && swipePosX <= (targetX + target.getWidth()) && touchPosY >= bomb.bombY && touchPosY <= (bomb.bombY + bomb.getBitmap().getHeight()) && swipePosY >= targetY && swipePosY <= (targetY + target.getHeight())) {
+                        swiped = false;
+                        pressDown = false;
+                        success = true;
+                    }
+                    swipePosX = 0;
+                    swipePosY = 0;
+                    touchPosX = 0;
+                    touchPosY = 0;
+                    swiped = false;
+                    pressDown = false;
                 }
             }
-
 
             else if (bomb.currentBombNo == 4) {
                 if (/*REAL SUCCESS CONDITION HERE*/ bomb.bombFrame > 4) {
@@ -170,7 +184,7 @@ public class GameWindow extends View {
         //If a success condition is met,
         //display success screen for 1 'tick' (100ms).
         if (success) {
-            canvas.drawBitmap(success_screen,null,rect,null);
+            canvas.drawBitmap(success_screen,null, screenSize,null);
             successScreenTicks++;
         }
 
@@ -188,13 +202,17 @@ public class GameWindow extends View {
                 bomb.bombFrame += 8;
             }
             success = false;
+            touchPosX = 0;
+            touchPosY = 0;
+            swipePosX = 0;
+            swipePosY = 0;
             successScreenTicks = 0;
         }
 
         //If success condition is not met when the timer hits 0
         //trigger game over.
         if(bomb.bombFrame > 30 && !success) {
-            canvas.drawBitmap(fail_screen,null,rect,null);
+            canvas.drawBitmap(fail_screen,null, screenSize,null);
             gameOverTicks++;
         }
 
@@ -222,8 +240,12 @@ public class GameWindow extends View {
             touchPosY = event.getY();
             pressDown = true;
         }
+        //If the current bomb is blue, accept a swipe instead of a tap
+        if (action == MotionEvent.ACTION_UP && bomb.currentBombNo == 3 && !swiped) {;
+            swipePosX = event.getX();
+            swipePosY = event.getY();
+            swiped = true;
+        }
         return true;
     }
-
-
 }

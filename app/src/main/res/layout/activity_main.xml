@@ -33,9 +33,20 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/imageButton"
         android:layout_alignStart="@+id/imageButton"
-        android:layout_below="@+id/imageButton"
-        android:layout_marginTop="41dp"
+        android:layout_below="@+id/HighScore"
+        android:layout_marginTop="33dp"
         android:contentDescription="@string/how_to_play_button"
         android:onClick="Help"
         android:src="@drawable/help_button" />
+
+    <TextView
+        android:id="@+id/HighScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/imageView3"
+        android:layout_alignStart="@+id/imageView3"
+        android:layout_below="@+id/imageButton"
+        android:text="High Score: 0"
+        android:textColor="#000"
+        android:textSize="20sp" />
 </RelativeLayout>

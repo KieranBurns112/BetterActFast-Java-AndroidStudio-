@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
     //Class variable
     public static int highScore = 0;
+    public static TextView HighScoreText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,8 @@ public class MainActivity extends Activity {
         */
 
         highScore = CurrentHighScore.getInt("HighScore", 0);
+        HighScoreText = (TextView) findViewById(R.id.HighScore);
+        HighScoreText.setText("High Score: " + highScore);
     }
 
     //Launch game (called from activity_main.xml).

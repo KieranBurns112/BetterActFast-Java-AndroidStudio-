@@ -14,7 +14,7 @@ public class Bombs {
     public Bombs(Context context) {
         //Select random bomb
         Random rand = new Random();
-        int chooseBomb = rand.nextInt(3); //SET TO 5 AT END OF CREATION
+        int chooseBomb = 3;//rand.nextInt(3); //SET TO 5 AT END OF CREATION
 
         //Call exclusive values of selected bomb
         if (chooseBomb == 0) {
@@ -30,11 +30,11 @@ public class Bombs {
             currentBombNo = 2;
         }
         else if (chooseBomb == 3) {
-            YellowBomb(context);
+            BlueBomb(context);
             currentBombNo = 3;
         }
         else if (chooseBomb == 4) {
-            BlueBomb(context);
+            YellowBomb(context);
             currentBombNo = 4;
         }
 
@@ -160,44 +160,6 @@ public class Bombs {
 
     //Returns image links to each frame of this bomb
     //if its called.
-    private void YellowBomb (Context context){
-        currentBomb[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_4);
-        currentBomb[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_4);
-        currentBomb[2] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_4);
-        currentBomb[3] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_4);
-        currentBomb[4] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_4);
-        currentBomb[5] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_4);
-        currentBomb[6] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_4);
-        currentBomb[7] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_4);
-        currentBomb[8] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_3);
-        currentBomb[9] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_3);
-        currentBomb[10] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_3);
-        currentBomb[11] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_3);
-        currentBomb[12] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_3);
-        currentBomb[13] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_3);
-        currentBomb[14] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_3);
-        currentBomb[15] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_3);
-        currentBomb[16] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_2);
-        currentBomb[17] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_2);
-        currentBomb[18] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_2);
-        currentBomb[19] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_2);
-        currentBomb[20] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_2);
-        currentBomb[21] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_2);
-        currentBomb[22] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_2);
-        currentBomb[23] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_2);
-        currentBomb[24] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_1);
-        currentBomb[25] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_1);
-        currentBomb[26] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_1);
-        currentBomb[27] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_1);
-        currentBomb[28] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_1);
-        currentBomb[29] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_1);
-        currentBomb[30] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_1);
-        currentBomb[31] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_1);
-        currentBomb[32] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb);
-    }
-
-    //Returns image links to each frame of this bomb
-    //if its called.
     private void BlueBomb (Context context){
         currentBomb[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.blue_bomb_4);
         currentBomb[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.blue_bomb_4);
@@ -232,6 +194,44 @@ public class Bombs {
         currentBomb[30] = BitmapFactory.decodeResource(context.getResources(),R.drawable.blue_bomb_1);
         currentBomb[31] = BitmapFactory.decodeResource(context.getResources(),R.drawable.blue_bomb_1);
         currentBomb[32] = BitmapFactory.decodeResource(context.getResources(),R.drawable.blue_bomb);
+    }
+
+    //Returns image links to each frame of this bomb
+    //if its called.
+    private void YellowBomb (Context context){
+        currentBomb[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_4);
+        currentBomb[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_4);
+        currentBomb[2] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_4);
+        currentBomb[3] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_4);
+        currentBomb[4] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_4);
+        currentBomb[5] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_4);
+        currentBomb[6] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_4);
+        currentBomb[7] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_4);
+        currentBomb[8] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_3);
+        currentBomb[9] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_3);
+        currentBomb[10] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_3);
+        currentBomb[11] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_3);
+        currentBomb[12] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_3);
+        currentBomb[13] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_3);
+        currentBomb[14] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_3);
+        currentBomb[15] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_3);
+        currentBomb[16] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_2);
+        currentBomb[17] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_2);
+        currentBomb[18] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_2);
+        currentBomb[19] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_2);
+        currentBomb[20] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_2);
+        currentBomb[21] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_2);
+        currentBomb[22] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_2);
+        currentBomb[23] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_2);
+        currentBomb[24] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_1);
+        currentBomb[25] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_1);
+        currentBomb[26] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_1);
+        currentBomb[27] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_1);
+        currentBomb[28] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_1);
+        currentBomb[29] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_1);
+        currentBomb[30] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_1);
+        currentBomb[31] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_1);
+        currentBomb[32] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb);
     }
 
     //Returns a link to the current frame of current bomb when called.
