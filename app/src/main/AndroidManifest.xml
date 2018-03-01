@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -18,11 +19,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Play"
+        <activity
+            android:name=".Play"
             android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".HelpButton"></activity>
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".HelpButton" />
+        <activity android:name=".GameOver"></activity>
     </application>
 
 </manifest>

@@ -6,12 +6,17 @@ import android.graphics.BitmapFactory;
 import java.util.Random;
 
 public class Bombs {
+    //Class variables
     Bitmap currentBomb[] = new Bitmap[33];
     int bombX, bombY, bombFrame, currentBombNo;
 
+    //When called, randomly select a bomb from the list of 5.
     public Bombs(Context context) {
+        //Select random bomb
         Random rand = new Random();
-        int chooseBomb =  2; //rand.nextInt(5);
+        int chooseBomb = rand.nextInt(3); //SET TO 5 AT END OF CREATION
+
+        //Call exclusive values of selected bomb
         if (chooseBomb == 0) {
             BlackBombA(context);
             currentBombNo = 0;
@@ -33,11 +38,14 @@ public class Bombs {
             currentBombNo = 4;
         }
 
+        //Set shared values of all bombs
         bombX = (GameWindow.displayX /2) - (currentBomb[0].getWidth() /2) + 50;
         bombY = (GameWindow.displayY /2) - (currentBomb[0].getHeight() /2);
         bombFrame = 0;
     }
 
+    //Returns image links to each frame of this bomb
+    //if its called.
     private void BlackBombA (Context context){
         currentBomb[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.black_bomb_a_4);
         currentBomb[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.black_bomb_a_4);
@@ -74,6 +82,8 @@ public class Bombs {
         currentBomb[32] = BitmapFactory.decodeResource(context.getResources(),R.drawable.black_bomb_a);
     }
 
+    //Returns image links to each frame of this bomb
+    //if its called.
     private void BlackBombB (Context context){
         currentBomb[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.black_bomb_b_4);
         currentBomb[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.black_bomb_b_4);
@@ -110,6 +120,8 @@ public class Bombs {
         currentBomb[32] = BitmapFactory.decodeResource(context.getResources(),R.drawable.black_bomb_b);
     }
 
+    //Returns image links to each frame of this bomb
+    //if its called.
     private void RedBomb (Context context){
         currentBomb[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.red_bomb_4);
         currentBomb[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.red_bomb_4);
@@ -146,6 +158,8 @@ public class Bombs {
         currentBomb[32] = BitmapFactory.decodeResource(context.getResources(),R.drawable.red_bomb);
     }
 
+    //Returns image links to each frame of this bomb
+    //if its called.
     private void YellowBomb (Context context){
         currentBomb[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_4);
         currentBomb[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb_4);
@@ -182,6 +196,8 @@ public class Bombs {
         currentBomb[32] = BitmapFactory.decodeResource(context.getResources(),R.drawable.yellow_bomb);
     }
 
+    //Returns image links to each frame of this bomb
+    //if its called.
     private void BlueBomb (Context context){
         currentBomb[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.blue_bomb_4);
         currentBomb[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.blue_bomb_4);
@@ -218,6 +234,7 @@ public class Bombs {
         currentBomb[32] = BitmapFactory.decodeResource(context.getResources(),R.drawable.blue_bomb);
     }
 
+    //Returns a link to the current frame of current bomb when called.
     public Bitmap getBitmap(){
         return currentBomb[bombFrame];
     }
