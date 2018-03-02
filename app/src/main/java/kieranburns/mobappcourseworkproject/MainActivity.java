@@ -24,22 +24,23 @@ public class MainActivity extends Activity {
         //Load High Score from file if it exists.
         SharedPreferences CurrentHighScore = getApplicationContext().getSharedPreferences("HighScore", MODE_PRIVATE);
         highScore = CurrentHighScore.getInt("HighScore", 0);
-
-        //Update text to show loaded High Score.
         HighScoreText = findViewById(R.id.HighScore);
-        UpdateScoreText();
-    }
-
-    //Update the "High Score" indicator on the main screen
-    public void UpdateScoreText() {
         String highScoreTextContent = "High Score: " + highScore;
         HighScoreText.setText(highScoreTextContent);
+    }
+
+    //Update 'High Score' text when Play has finished.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String highScoreTextContent = "High Score: " + highScore;
+        HighScoreText.setText(highScoreTextContent);
+
     }
 
     //Launch game (called from activity_main.xml).
     public void Play(View v) {
         Intent playGame = new Intent(this, Play.class);
-        startActivity(playGame);
+        startActivityForResult(playGame, 1);
     }
 
     //Launch help screen (called from activity_main.xml).

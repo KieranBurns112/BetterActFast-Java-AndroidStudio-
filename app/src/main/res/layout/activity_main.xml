@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="91dp"
+        android:layout_marginTop="66dp"
         android:contentDescription="@string/play_button"
         android:onClick="Play"
         android:src="@drawable/play_button" />
@@ -46,7 +46,7 @@
         android:layout_alignLeft="@+id/imageView3"
         android:layout_alignStart="@+id/imageView3"
         android:layout_below="@+id/imageButton"
-        android:text="High Score: 0"
+        android:text="@string/high_score"
         android:textColor="#000"
         android:textSize="20sp" />
 </RelativeLayout>

@@ -5,4 +5,5 @@
     <string name="title">main screen game title</string>
     <string name="how_to_play_button">button to open how to play screen</string>
     <string name="BackButton">Back button on help page</string>
+    <string name="high_score">High Score: 0</string>
 </resources>

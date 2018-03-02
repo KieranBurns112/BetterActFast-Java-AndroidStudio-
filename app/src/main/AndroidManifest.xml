@@ -4,11 +4,12 @@
 
     <application
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/title"
         android:label="Better Act Fast!"
         android:roundIcon="@drawable/title"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        android:largeHeap="true">
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden"

@@ -17,10 +17,10 @@ import android.os.Handler;
 
 public class GameWindow extends View {
     //Class variables
-    Bitmap background, success_screen, fail_screen,spark,target;
-    Rect screenSize;
+    Bitmap background, success_screen, fail_screen, spark, fuse_a, fuse_b, target;
+    Rect screenSize, bombSize, sparkSize, fuseSize, targetSize;
     static int displayX, displayY;
-    int score, highScore, taps, sparkPosX, sparkPosY, targetX, targetY, successScreenTicks, gameOverTicks;
+    int bombX, bombY, score, highScore, taps, sparkX, sparkY, fuseX, fuseY, targetX, targetY, successScreenTicks, gameOverTicks;
     Paint letters = new Paint();
     Bombs bomb;
     boolean success, pressDown, swiped;
@@ -50,6 +50,8 @@ public class GameWindow extends View {
         success_screen = BitmapFactory.decodeResource(getResources(),R.drawable.success);
         fail_screen = BitmapFactory.decodeResource(getResources(),R.drawable.failure);
         spark = BitmapFactory.decodeResource(getResources(),R.drawable.snub);
+        fuse_a = BitmapFactory.decodeResource(getResources(),R.drawable.black_fuse_a);
+        fuse_b = BitmapFactory.decodeResource(getResources(),R.drawable.black_fuse_b);
         target = BitmapFactory.decodeResource(getResources(),R.drawable.target);
 
         //Get screen size to scale the game to the phone screen.
@@ -63,6 +65,21 @@ public class GameWindow extends View {
         //Generate the first bomb for the game
         bomb = new Bombs(context);
 
+        //Set the scale of the bomb image to rely on user screen size for
+        // use on phones with different sized screens.
+        bombX = (displayX /15);
+        bombY = (displayY /3);
+        bombSize = new Rect(bombX, bombY, displayX - bombX, displayY - bombX);
+
+        targetX = (displayX / 2) - (displayX / 8);
+        targetY = bombY - (displayX * 2 / 5);
+        targetSize = new Rect(targetX, targetY, targetX + (displayX / 4) , targetY + (displayX / 4));
+
+        //Set font size from screen scale.
+        letters.setColor(Color.BLACK);
+        float scaledSizeInPixels = 20 * getResources().getDisplayMetrics().scaledDensity;
+        letters.setTextSize(scaledSizeInPixels);
+
         //Start the game (onDraw)
         handler = new Handler();
         runnable = new Runnable() {
@@ -73,6 +90,15 @@ public class GameWindow extends View {
         };
     }
 
+    //Used to change to location of the spark placed on the black bombs
+    private Rect setSparkLocation() {
+        return new Rect(sparkX, sparkY, sparkX + (displayX / 5), sparkY + (displayX / 5));
+    }
+
+    //Used to change to location of the fuse placed on the black bombs
+    private Rect setFuseLocation() {
+        return new Rect(fuseX, fuseY, fuseX + (displayX / 5), fuseY + (displayX / 10));
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -82,14 +108,11 @@ public class GameWindow extends View {
         canvas.drawBitmap(background, null, screenSize, null);
 
         //Draw current user score on screen.
-        letters.setColor(Color.BLACK);
-        letters.setTextSize(72);
-        canvas.drawText("Score: " + score, 40, 70, letters);
-        canvas.drawText("High Score: " + highScore, 40, 140, letters);
+        canvas.drawText("Score: " + score, 0,letters.getTextSize() , letters);
+        canvas.drawText("High Score: " + highScore, 0, letters.getTextSize() * 2, letters);
 
         //Draw current bomb on screen.
-        canvas.drawBitmap(bomb.getBitmap(), bomb.bombX, bomb.bombY, null);
-
+        canvas.drawBitmap(bomb.getBitmap(), null, bombSize, null);
         if (gameOverTicks == 0){
             //If bomb is not defused, advance to the next frame of the
             //bomb countdown.
@@ -102,13 +125,19 @@ public class GameWindow extends View {
             //bomb and await a click on the wick as
             //the success condition.
             if (bomb.currentBombNo == 0) {
-                sparkPosX = (bomb.bombX + bomb.getBitmap().getWidth() - (spark.getWidth() + (spark.getWidth()/2)));
-                sparkPosY = bomb.bombY;
-                canvas.drawBitmap(spark, sparkPosX, sparkPosY, null);
+                fuseX = displayX / 2;
+                fuseY = bombY - (displayX / 10);
+                fuseSize = setFuseLocation();
+                canvas.drawBitmap(fuse_a, null, fuseSize, null);
+
+                sparkX = displayX - bombX - (displayX / 3) ;
+                sparkY = bombY  - (displayX / 5) ;
+                sparkSize = setSparkLocation();
+                canvas.drawBitmap(spark, null, sparkSize, null);
 
                 if (pressDown) {
-                    if (touchPosX >= sparkPosX && touchPosX <= (sparkPosX + spark.getWidth())) {
-                        if (touchPosY >= sparkPosY && touchPosY <= (sparkPosY + spark.getHeight())) {
+                    if (touchPosX >= sparkX && touchPosX <= sparkSize.right) {
+                        if (touchPosY >= sparkY && touchPosY <= sparkSize.bottom) {
                             success = true;
                         }
                     }
@@ -121,13 +150,21 @@ public class GameWindow extends View {
             //bomb and await a click on the wick as
             //the success condition.
             else if (bomb.currentBombNo == 1) {
-                sparkPosX = bomb.bombX + 50;
-                sparkPosY = bomb.bombY - 20;
-                canvas.drawBitmap(spark, sparkPosX, sparkPosY, null);
+                fuseX = (displayX / 2) - (displayX / 5);
+                fuseY = bombY - (displayX / 10);
+                fuseSize = setFuseLocation();
+                canvas.drawBitmap(fuse_b, null, fuseSize, null);
+
+                sparkX = displayX / 6;
+                sparkY = bombY - (displayX / 5);
+                sparkSize = setSparkLocation();
+                canvas.drawBitmap(spark, null, sparkSize, null);
+
+
 
                 if (pressDown) {
-                    if (touchPosX >= sparkPosX && touchPosX <= (sparkPosX + spark.getWidth())) {
-                        if (touchPosY >= sparkPosY && touchPosY <= (sparkPosY + spark.getHeight())) {
+                    if (touchPosX >= sparkX && touchPosX <= sparkSize.right) {
+                        if (touchPosY >= sparkY && touchPosY <= sparkSize.bottom) {
                             success = true;
                         }
                     }
@@ -139,16 +176,16 @@ public class GameWindow extends View {
             // clicks on the bomb as the success condition.
             else if (bomb.currentBombNo == 2) {
                 if (pressDown) {
-                    if (touchPosX >= bomb.bombX && touchPosX <= (bomb.bombX + bomb.getBitmap().getWidth())) {
-                        if (touchPosY >= bomb.bombY && touchPosY <= (bomb.bombY + bomb.getBitmap().getHeight())) {
+                    if (touchPosX >= bombX && touchPosX <= (bombX + bomb.getBitmap().getWidth())) {
+                        if (touchPosY >= bombY && touchPosY <= (bombY + bomb.getBitmap().getHeight())) {
                             taps++;
                         }
                     }
                     pressDown = false;
                 }
                 if (taps >= 5) {
-                    success = true;
                     taps = 0;
+                    success = true;
                 }
             }
 
@@ -156,15 +193,13 @@ public class GameWindow extends View {
             //from the middle of the screen towards the top as
             //the success condition.
             else if (bomb.currentBombNo == 3) {
-                targetX = ((displayX / 2) - (target.getWidth() / 2));
-                targetY = (bomb.bombY - (target.getHeight()/2));
-                canvas.drawBitmap(target, targetX, targetY, null);
+                canvas.drawBitmap(target, null, targetSize, null);
 
                 if (pressDown && swiped) {
-                    if (touchPosX >= bomb.bombX && touchPosX <= (bomb.bombX + bomb.getBitmap().getWidth())) {
-                        if (touchPosY >= (bomb.bombY + (target.getHeight() / 2)) && touchPosY <= (bomb.bombY + bomb.getBitmap().getHeight())) {
-                            if (swipePosX >= targetX && swipePosX <= (targetX + target.getWidth())) {
-                                if (swipePosY >= targetY && swipePosY <= (targetY + target.getHeight())) {
+                    if (touchPosX >= bombX && touchPosX <= (bombX + bomb.getBitmap().getWidth())) {
+                        if (touchPosY >= bombY  && touchPosY <= (bombY + bomb.getBitmap().getHeight())) {
+                            if (swipePosX >= targetX && swipePosX <= targetSize.right) {
+                                if (swipePosY >= targetY && swipePosY <= targetSize.bottom) {
                                     pressDown = false;
                                     swiped = false;
                                     success = true;
@@ -210,7 +245,7 @@ public class GameWindow extends View {
         //on new bomb timer after 10 points are scored and
         //remove 2 seconds after 25.
         if (successScreenTicks == 8) {
-            bomb = new Bombs(getContext());
+            bomb = new Bombs(this.getContext());
             score++;
             if (score > 10){
                 bomb.bombFrame+=8;
