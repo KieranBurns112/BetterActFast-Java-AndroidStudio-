@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
+
 
 //When Called, launch GameWindow until GameWindow
 //calls finish.
@@ -33,8 +33,7 @@ public class Play extends Activity {
         SharedPreferences.Editor ScoreEditor = updateHighScore.edit();
         ScoreEditor.putInt("HighScore", MainActivity.highScore);
         ScoreEditor.apply();
-
-        String highScoreTextContent = "High Score: " + MainActivity.highScore;
-        MainActivity.HighScoreText.setText(highScoreTextContent);
+        MainActivity callTextUpdate = new MainActivity();
+        callTextUpdate.UpdateScoreText();
     }
 }

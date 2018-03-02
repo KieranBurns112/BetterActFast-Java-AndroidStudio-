@@ -15,7 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.os.Handler;
 
-public class GameWindow extends View{
+public class GameWindow extends View {
     //Class variables
     Bitmap background, success_screen, fail_screen,spark,target;
     Rect screenSize;

@@ -14,7 +14,7 @@ public class Bombs {
     public Bombs(Context context) {
         //Select random bomb
         Random rand = new Random();
-        int chooseBomb = rand.nextInt(1); //SET TO 5 AT END OF CREATION
+        int chooseBomb = rand.nextInt(4); //SET TO 5 AT END OF CREATION
 
         //Call exclusive values of selected bomb
         if (chooseBomb == 0) {
