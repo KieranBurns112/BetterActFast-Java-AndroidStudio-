@@ -1,5 +1,6 @@
 package kieranburns.mobappcourseworkproject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -19,7 +20,8 @@ public class GameWindow extends View{
     Bitmap background, success_screen, fail_screen,spark,target;
     Rect screenSize;
     static int displayX, displayY;
-    int score, highScore, taps, sparkPosX, sparkPosY, successScreenTicks, gameOverTicks;
+    int score, highScore, taps, sparkPosX, sparkPosY, targetX, targetY, successScreenTicks, gameOverTicks;
+    Paint letters = new Paint();
     Bombs bomb;
     boolean success, pressDown, swiped;
     Handler handler;
@@ -80,7 +82,6 @@ public class GameWindow extends View{
         canvas.drawBitmap(background, null, screenSize, null);
 
         //Draw current user score on screen.
-        Paint letters = new Paint();
         letters.setColor(Color.BLACK);
         letters.setTextSize(72);
         canvas.drawText("Score: " + score, 40, 70, letters);
@@ -101,7 +102,7 @@ public class GameWindow extends View{
             //bomb and await a click on the wick as
             //the success condition.
             if (bomb.currentBombNo == 0) {
-                sparkPosX = (bomb.bombX * 4) + 75;
+                sparkPosX = (bomb.bombX + bomb.getBitmap().getWidth() - (spark.getWidth() + (spark.getWidth()/2)));
                 sparkPosY = bomb.bombY;
                 canvas.drawBitmap(spark, sparkPosX, sparkPosY, null);
 
@@ -155,22 +156,38 @@ public class GameWindow extends View{
             //from the middle of the screen towards the top as
             //the success condition.
             else if (bomb.currentBombNo == 3) {
-                int targetX = ((displayX / 2) - (target.getWidth() / 2));
-                int targetY = (bomb.bombY - (target.getHeight() / 2));
+                targetX = ((displayX / 2) - (target.getWidth() / 2));
+                targetY = (bomb.bombY - (target.getHeight()/2));
                 canvas.drawBitmap(target, targetX, targetY, null);
 
                 if (pressDown && swiped) {
-                    if (touchPosX >= bomb.bombX && touchPosX <= (bomb.bombX + bomb.getBitmap().getWidth()) && swipePosX >= targetX && swipePosX <= (targetX + target.getWidth()) && touchPosY >= bomb.bombY && touchPosY <= (bomb.bombY + bomb.getBitmap().getHeight()) && swipePosY >= targetY && swipePosY <= (targetY + target.getHeight())) {
+                    if (touchPosX >= bomb.bombX && touchPosX <= (bomb.bombX + bomb.getBitmap().getWidth())) {
+                        if (touchPosY >= (bomb.bombY + (target.getHeight() / 2)) && touchPosY <= (bomb.bombY + bomb.getBitmap().getHeight())) {
+                            if (swipePosX >= targetX && swipePosX <= (targetX + target.getWidth())) {
+                                if (swipePosY >= targetY && swipePosY <= (targetY + target.getHeight())) {
+                                    pressDown = false;
+                                    swiped = false;
+                                    success = true;
+                                }
+                                else {
+                                    swiped = false;
+                                    pressDown = false;
+                                }
+                            }
+                            else {
+                                swiped = false;
+                                pressDown = false;
+                            }
+                        }
+                        else {
+                            swiped = false;
+                            pressDown = false;
+                        }
+                    }
+                    else {
                         swiped = false;
                         pressDown = false;
-                        success = true;
                     }
-                    swipePosX = 0;
-                    swipePosY = 0;
-                    touchPosX = 0;
-                    touchPosY = 0;
-                    swiped = false;
-                    pressDown = false;
                 }
             }
 
@@ -232,16 +249,19 @@ public class GameWindow extends View{
 
     //Await user tapping the screen and take the coordinates
     //of the area that was tapped.
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction();
         if (action == MotionEvent.ACTION_DOWN && !pressDown) {
+            swipePosX = 0;
+            swipePosY = 0;
             touchPosX = event.getX();
             touchPosY = event.getY();
             pressDown = true;
         }
         //If the current bomb is blue, accept a swipe instead of a tap
-        if (action == MotionEvent.ACTION_UP && bomb.currentBombNo == 3 && !swiped) {;
+        if (action == MotionEvent.ACTION_UP && bomb.currentBombNo == 3 && !swiped) {
             swipePosX = event.getX();
             swipePosY = event.getY();
             swiped = true;

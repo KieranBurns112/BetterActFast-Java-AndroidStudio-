@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 //When Called, launch GameWindow until GameWindow
 //calls finish.
@@ -28,11 +29,12 @@ public class Play extends Activity {
         super.onDestroy();
 
         //Write current High Score to file to ensure persistence.
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("HighScore", MODE_PRIVATE);
-        SharedPreferences.Editor ScoreEditor = pref.edit();
+        SharedPreferences updateHighScore = getApplicationContext().getSharedPreferences("HighScore", MODE_PRIVATE);
+        SharedPreferences.Editor ScoreEditor = updateHighScore.edit();
         ScoreEditor.putInt("HighScore", MainActivity.highScore);
-        ScoreEditor.commit();
+        ScoreEditor.apply();
 
-        MainActivity.HighScoreText.setText("High Score: " + MainActivity.highScore);
+        String highScoreTextContent = "High Score: " + MainActivity.highScore;
+        MainActivity.HighScoreText.setText(highScoreTextContent);
     }
 }

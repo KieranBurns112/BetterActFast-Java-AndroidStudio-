@@ -5,38 +5,37 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
     //Class variable
     public static int highScore = 0;
     public static TextView HighScoreText;
+    String highScoreTextContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Load HighScore from file
+        //Set Fullscreen mode.
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        //Load High Score from file if it exists.
         SharedPreferences CurrentHighScore = getApplicationContext().getSharedPreferences("HighScore", MODE_PRIVATE);
-
-        /*
-        //DELETE TAGS TO USE TEMP TO CLEAR SAVE DATA
-        // \TEMP ---
-        SharedPreferences.Editor ScoreEditor = CurrentHighScore.edit();
-        ScoreEditor.clear();
-        ScoreEditor.commit();
-        //        ---\
-        */
-
         highScore = CurrentHighScore.getInt("HighScore", 0);
+
+        //Update text to show loaded High Score.
         HighScoreText = findViewById(R.id.HighScore);
-        HighScoreText.setText("High Score: " + highScore);
+        highScoreTextContent = "High Score: " + highScore;
+        HighScoreText.setText(highScoreTextContent);
     }
+
 
     //Launch game (called from activity_main.xml).
     public void Play(View v) {
-        Intent playGame = new Intent(this,Play.class);
+        Intent playGame = new Intent(this, Play.class);
         startActivity(playGame);
     }
 

@@ -14,7 +14,7 @@ public class Bombs {
     public Bombs(Context context) {
         //Select random bomb
         Random rand = new Random();
-        int chooseBomb = 3;//rand.nextInt(3); //SET TO 5 AT END OF CREATION
+        int chooseBomb = rand.nextInt(1); //SET TO 5 AT END OF CREATION
 
         //Call exclusive values of selected bomb
         if (chooseBomb == 0) {
@@ -40,7 +40,7 @@ public class Bombs {
 
         //Set shared values of all bombs
         bombX = (GameWindow.displayX /2) - (currentBomb[0].getWidth() /2) + 50;
-        bombY = (GameWindow.displayY /2) - (currentBomb[0].getHeight() /2);
+        bombY = (GameWindow.displayY /2) - (currentBomb[0].getHeight() /3);
         bombFrame = 0;
     }
 
