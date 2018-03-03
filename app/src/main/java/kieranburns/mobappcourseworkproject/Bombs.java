@@ -11,10 +11,10 @@ public class Bombs {
     int bombFrame, currentBombNo;
 
     //When called, randomly select a bomb from the list of 5.
-    public Bombs(Context context) {
-        //Select random bomb
+    public Bombs(Context context, int availableBombs) {
+        //Select random bomb from the 5 available.
         Random rand = new Random();
-        int chooseBomb =  rand.nextInt(4);
+        int chooseBomb = rand.nextInt(availableBombs);
 
         //Call exclusive values of selected bomb
         if (chooseBomb == 0) {
