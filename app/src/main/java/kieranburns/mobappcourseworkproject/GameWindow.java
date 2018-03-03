@@ -274,6 +274,13 @@ public class GameWindow extends View {
             if (score > 25) {
                 bomb.bombFrame += 8;
             }
+            if (score > 50) {
+                bomb.bombFrame += 4;
+            }
+            if (score > 75) {
+                bomb.bombFrame += 4;
+            }
+            
             success = false;
             touchPosX = 0;
             touchPosY = 0;
