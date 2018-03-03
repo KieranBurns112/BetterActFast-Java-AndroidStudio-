@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.hardware.SensorManager;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,19 +19,23 @@ import android.os.Handler;
 public class GameWindow extends View {
     //Class variables
     Bitmap background, success_screen, fail_screen, spark, fuse_a, fuse_b, target;
-    Rect screenSize, bombSize, sparkSize, fuseSize, targetSize;
-    static int displayX, displayY;
+    Rect screenSize, bombSize, targetSize;
+    int displayX;
     int bombX, bombY, score, highScore, taps, sparkX, sparkY, fuseX, fuseY, targetX, targetY, successScreenTicks, gameOverTicks;
     Paint letters = new Paint();
     Bombs bomb;
     boolean success, pressDown, swiped;
     Handler handler;
     Runnable runnable;
-    final long update_screen = 100;
     float touchPosX, touchPosY, swipePosX, swipePosY;
+    SensorManager sensorManager;
 
     public GameWindow(Context context) {
         super(context);
+
+        //Method variable
+        int displayY;
+        Point size;
 
         //Set basic values required for the game
         score = 0;
@@ -56,7 +61,7 @@ public class GameWindow extends View {
 
         //Get screen size to scale the game to the phone screen.
         Display display = ((Activity)getContext()).getWindowManager().getDefaultDisplay();
-        Point size = new Point();
+        size = new Point();
         display.getSize(size);
         displayX = size.x;
         displayY = size.y;
@@ -103,6 +108,10 @@ public class GameWindow extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        //Method variables
+        Rect sparkSize;
+        Rect fuseSize;
 
         //Draw background on screen.
         canvas.drawBitmap(background, null, screenSize, null);
@@ -279,7 +288,7 @@ public class GameWindow extends View {
         }
 
         //Progress 'ticks' by 1 (100ms)
-        handler.postDelayed(runnable,update_screen);
+        handler.postDelayed(runnable,100);
     }
 
     //Await user tapping the screen and take the coordinates

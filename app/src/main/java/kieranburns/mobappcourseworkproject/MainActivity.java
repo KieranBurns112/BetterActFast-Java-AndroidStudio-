@@ -9,7 +9,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
-    //Class variable
+    //Class variables
     public static int highScore = 0;
     public TextView HighScoreText;
 
@@ -25,16 +25,18 @@ public class MainActivity extends Activity {
         SharedPreferences CurrentHighScore = getApplicationContext().getSharedPreferences("HighScore", MODE_PRIVATE);
         highScore = CurrentHighScore.getInt("HighScore", 0);
         HighScoreText = findViewById(R.id.HighScore);
-        String highScoreTextContent = "High Score: " + highScore;
-        HighScoreText.setText(highScoreTextContent);
+        UpdateHighScore();
     }
 
     //Update 'High Score' text when Play has finished.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        UpdateHighScore();
+    }
+
+    private void UpdateHighScore() {
         String highScoreTextContent = "High Score: " + highScore;
         HighScoreText.setText(highScoreTextContent);
-
     }
 
     //Launch game (called from activity_main.xml).
