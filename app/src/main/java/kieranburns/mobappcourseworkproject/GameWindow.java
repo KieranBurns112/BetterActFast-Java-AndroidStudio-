@@ -268,19 +268,19 @@ public class GameWindow extends View {
         if (successScreenTicks == 8) {
             bomb = new Bombs(this.getContext(), availableBombs);
             score++;
-            if (score > 10) {
+            if (score > 5) {
                 bomb.bombFrame += 8;
             }
-            if (score > 25) {
+            if (score > 15) {
                 bomb.bombFrame += 8;
+            }
+            if (score > 30) {
+                bomb.bombFrame += 4;
             }
             if (score > 50) {
                 bomb.bombFrame += 4;
             }
-            if (score > 75) {
-                bomb.bombFrame += 4;
-            }
-            
+
             success = false;
             touchPosX = 0;
             touchPosY = 0;
